@@ -1,7 +1,11 @@
 ﻿using System.Drawing;
+using System.Runtime.Serialization;
+using System.Text.Encodings.Web;
+using System.Runtime.Serialization.Json;
 
 namespace practic5
 {
+    [Serializable]
     partial class Circle
     {
         public int X
@@ -185,6 +189,7 @@ namespace practic5
 
 
     }
+    
     partial class VectorImage
     {
         public partial int GetQuantityCircle() //нахождение количества кругов
@@ -321,39 +326,22 @@ namespace practic5
     }
     class Program
     {
-        static void Main()
+       static void Main()
         {
-            VectorImage b = new VectorImage(12, 15, 18, Color.red, Color.blue, 12, 14, 15, 13, 19, 23, Color.white, Color.black, 29, 67); //конструктор
-            Console.WriteLine();
-            b.GetCircle(0);  //вывод круга для проверки
-            b.GetTriangle(0);  //вывод треугольника для проверки
+            Circle circle = new Circle(12, 15, 18, Color.red, Color.blue);
+            FileStream file = File.Create("circle.json");
+            DataContractJsonSerializer form = new DataContractJsonSerializer(circle.GetType());
 
-            Console.WriteLine();
-            b.AddCircle(15, 18, 21, Color.red, Color.blue);  //добавление нового круга
-            b.AddTriangle(18, 17, 1, 12, 8, -1, Color.white, Color.black);  //добавление нового треугольника
-            b.GetCircle(1);  //вывод нового круга для проверки
-            b.GetTriangle(1);  //вывод нового треугольника для проверки
+            form.WriteObject(file, circle);
+            Console.WriteLine("Данные сериализованы");
+            file.Close();
 
-            Console.WriteLine();
-            b.AddCircle(19, 17, 11, Color.blue, Color.white); //добавление нового круга
-            b.GetCircle(2);  //вывод нового круга для проверки
+            file = File.OpenRead("circle.json");
 
-            Console.WriteLine();
-            b.MoveX(3);  //смещаем по х координате
-            b.MoveY(5);  //смещаем по y координате
-            Console.WriteLine("After MoveX(3) and MoveY(5):");
-            b.GetCircle(1);  //вывод круга для проверки MoveX
-            b.GetTriangle(1);  //вывод треугольника для проверки MoveY
+            Circle c = form.ReadObject(file) as Circle;
+            Console.WriteLine("Данные десериализованы");
 
-            Console.WriteLine();
-            b.DeleteCircle(1);  //удаляем круг
-            b.DeleteTriangle(1);  //удаляем треугольник
-            int count1 = b.GetQuantityCircle();  //выводим количество элементов в массиве Круга для проверки функций удаления
-            int count2 = b.GetQuantityTriangle();
-            Console.WriteLine("Size of circle after delete: " + count1);
-            Console.WriteLine("Size of triangle after delete: " + count2);
-
+            c.print();
         }
-
     }
 }
