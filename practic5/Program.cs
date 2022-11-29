@@ -1,109 +1,90 @@
-﻿using System.Drawing;
-using System.Runtime.Serialization;
-using System.Text.Encodings.Web;
-using System.Runtime.Serialization.Json;
-
-namespace practic5
+﻿namespace lab2WIn
 {
-    [Serializable]
-    partial class Circle
+    public partial class Circle : Figure
     {
         public int X
         {
             set { x = value; }
+            get { return x; }
         }
         public int Y
         {
             set { y = value; }
+            get { return y; }
         }
         public int Radius
         {
             set { R = (value >= 1) ? value : 1; }
-        }
-        public Color Fill
-        {
-            set
-            {
-                if (Check.check(value) == 1) ColorFillCircle = value;
-                else
-                {
-                    Console.WriteLine("Error in ColorFill");
-                    return;
-                }
-
-            }
-        }
-        public Color Stroke
-        {
-            set
-            {
-                if (Check.check(value) == 1) ColorStrokeCircle = value;
-                else
-                {
-                    Console.WriteLine("Error in ColorFill");
-                    return;
-                }
-            }
+            get { return R; }
         }
 
-        public partial void print() // вывод Круга
-        {
-            Console.WriteLine("x: " + x);
-            Console.WriteLine("y: " + y);
-            Console.WriteLine("R: " + R);
-            Console.WriteLine("ColorFill: ");   //вывод цвета заливик 
-            ColorPrint.print_color(ColorFillCircle);
-            Console.WriteLine("ColorStroke: ");  //вывод цвета обводки
-            ColorPrint.print_color(ColorStrokeCircle);
-        }
 
-        public partial double GetPerimetr()
+        public override partial double GetPerimetr()
         {
             return 2 * 3.14 * R;
         }
 
-        public partial double GetSquare()
+        public override partial double GetSquare()
         {
             return 3.14 * R * R;
         }
 
-        public partial void MoveX(int dx) // смещение по оси X
+        public override partial void MoveX(int dx) // смещение по оси X
         {
             x += dx;
         }
 
-        public partial void MoveY(int dy) // смещение по оси Y
+        public override partial void MoveY(int dy) // смещение по оси Y
         {
             y += dy;
         }
+        public override partial void PrintSquare(int i)
+        {
+            Console.WriteLine($"Круг [{i}]:\nx: {x}\ny: {y}\nРадиус: {R}\nЦвет заливки: {ColorPrint.print_colorstring(ColorFill)}\nЦвет обводки: {ColorPrint.print_colorstring(ColorStroke)}\nПлощадь: {GetSquare()}");
+        }
+        public override partial void PrintPerimetr(int i)
+        {
+            Console.WriteLine($"Круг [{i}]:\nx: {x}\ny: {y}\nРадиус: {R}\nЦвет заливки: {ColorPrint.print_colorstring(ColorFill)}\nЦвет обводки: {ColorPrint.print_colorstring(ColorStroke)}\nПериметр: {GetPerimetr()}");
+        }
+        public override partial void print(int i) // вывод Круга
+        {
+            Console.WriteLine($"Круг [{i}]:\nx: {x}\ny: {y}\nРадиус: {R}\nЦвет заливки: {ColorPrint.print_colorstring(ColorFill)}\nЦвет обводки: {ColorPrint.print_colorstring(ColorStroke)}");
+        }
+
     }
-    partial class Triangle
+    public partial class Triangle : Figure
     {
         public int X1
         {
             set { x1 = value; }
+            get { return x1; }
         }
         public int Y1
         {
             set { y1 = value; }
+            get { return y1; }
         }
         public int X2
         {
             set { x2 = value; }
+            get { return x2; }
         }
         public int Y2
         {
             set { y2 = value; }
+            get { return y2; }
         }
         public int X3
         {
             set { x3 = value; }
+            get { return x3; }
         }
         public int Y3
         {
             set { y3 = value; }
+            get { return y3; }
         }
-        private partial double GetLine(int x1, int y1, int x2, int y2)  //функция для определения стороны треугольник(ищет по т.Пифагора)
+        public partial double GetLine(int x1, int y1, int x2, int y2)  //функция для определения стороны треугольник(ищет по т.Пифагора)
         {
             int a = Math.Abs(x1 - x2);
             int b = Math.Abs(y1 - y2);
@@ -111,32 +92,7 @@ namespace practic5
             return c;
 
         }
-        public Color FillT
-        {
-            set
-            {
-                if (Check.check(value) == 1) ColorFillTriangle = value;
-                else
-                {
-                    Console.WriteLine("Error in ColorFill");
-                    return;
-                }
-            }
-        }
-        public Color StrokeT
-        {
-            set
-            {
-                if (Check.check(value) == 1) ColorStrokeTriangle = value;
-                else
-                {
-                    Console.WriteLine("Error in ColorStroke");
-                    return;
-                }
-
-            }
-        }
-        public partial double GetPerimetr() //периметр треугольника
+        public override partial double GetPerimetr() //периметр треугольника
         {
             double a = GetLine(x1, y1, x2, y2);
             double b = GetLine(x1, y1, x3, y3);
@@ -144,7 +100,7 @@ namespace practic5
             return a + b + c;
 
         }
-        public partial double GetSquare() //площадь треугольника
+        public override partial double GetSquare() //площадь треугольника
 
         {
             double a = GetLine(x1, y1, x2, y2);
@@ -154,194 +110,165 @@ namespace practic5
             return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
 
         }
-        public partial void MoveX(int dx) //пемерещение по х координате
-
+        public override partial void MoveX(int dx) //пемерещение по х координате
         {
             x1 += dx;
             x2 += dx;
             x3 += dx;
         }
-        public partial void MoveY(int dy) //перемещение по y координате
+        public override partial void MoveY(int dy) //перемещение по y координате
         {
             y1 += dy;
             y2 += dy;
             y3 += dy;
         }
-        public partial void print() //вывод
+        public override partial void PrintSquare(int i)
         {
-            Console.WriteLine("x1 : " + x1);
-            Console.WriteLine("y1 : " + y1);
-
-            Console.WriteLine("x2 : " + x2);
-            Console.WriteLine("y2 : " + y2);
-
-            Console.WriteLine("x3 : " + x3);
-            Console.WriteLine("y3 : " + y3);
-
-            Console.WriteLine("ColorFill : ");
-            ColorPrint.print_color(ColorFillTriangle);
-
-
-            Console.WriteLine("ColorStroke : ");
-            ColorPrint.print_color(ColorStrokeTriangle);
-
+            Console.WriteLine($"Треугольник[{i}]:\nx1: {x1}\ny1: {y1}\nx2: {x2}\ny2: {y2}\nx3: {x3}\ny3: {y3}\nЦвет заливки: {ColorPrint.print_colorstring(ColorFill)}\nЦвет обовдки: {ColorPrint.print_colorstring(ColorStroke)}\nПлощадь: {GetSquare()}");
+        }
+        public override partial void PrintPerimetr(int i)
+        {
+            Console.WriteLine($"Треугольник[{i}]:\nx1: {x1}\ny1: {y1}\nx2: {x2}\ny2: {y2}\nx3: {x3}\ny3: {y3}\nЦвет заливки: {ColorPrint.print_colorstring(ColorFill)}\nЦвет обовдки: {ColorPrint.print_colorstring(ColorStroke)}\nПериметр: {GetPerimetr()}");
+        }
+        public override partial void print(int i) //вывод
+        {
+            Console.WriteLine($"Треугольник[{i}]:\nx1: {x1}\ny1: {y1}\nx2: {x2}\ny2: {y2}\nx3: {x3}\ny3: {y3}\nЦвет заливки: {ColorPrint.print_colorstring(ColorFill)}\nЦвет обовдки: {ColorPrint.print_colorstring(ColorStroke)}");
         }
 
-
     }
-    
-    partial class VectorImage
+    public partial class VectorImage
     {
         public partial int GetQuantityCircle() //нахождение количества кругов
         {
-            return circle.Count;
+            return circlelist.Count;
         }
-        public partial void AddCircle(int x, int y, int r, Color fill, Color stroke) //добавление круга
+        public partial void AddCircle(int x, int y, int r, Colors fill, Colors stroke) //добавление круга
         {
-            int k = circle.Count;
-            circle.Add(new Circle(x, y, r, fill, stroke));
-            circle[k].X = x;
-            circle[k].Y = y;
-            circle[k].Radius = r;
-            circle[k].Fill = fill;
-            circle[k].Stroke = stroke;
+            int k = circlelist.Count;
+            circlelist.Add(new Circle(x, y, r, fill, stroke));
+            circlelist[k].X = x;
+            circlelist[k].Y = y;
+            circlelist[k].Radius = r;
+            circlelist[k].Fill = fill;
+            circlelist[k].Stroke = stroke;
 
         }
-        public partial void AddTriangle(int X1, int Y1, int X2, int Y2, int X3, int Y3, Color filltriangle, Color stroketriangle) //добавления треугольника
+        public partial void AddTriangle(int X1, int Y1, int X2, int Y2, int X3, int Y3, Colors filltriangle, Colors stroketriangle) //добавления треугольника
         {
-            int k = triangle.Count;
-            triangle.Add(new Triangle(X1, Y1, X2, Y2, X3, Y3, filltriangle, stroketriangle));
-            triangle[k].X1 = X1;
-            triangle[k].Y1 = Y1;
-            triangle[k].X2 = X2;
-            triangle[k].Y2 = Y2;
-            triangle[k].X3 = X3;
-            triangle[k].Y3 = Y3;
-            triangle[k].FillT = filltriangle;
-            triangle[k].StrokeT = stroketriangle;
+            int k = trianglelist.Count;
+            trianglelist.Add(new Triangle(X1, Y1, X2, Y2, X3, Y3, filltriangle, stroketriangle));
+            trianglelist[k].X1 = X1;
+            trianglelist[k].Y1 = Y1;
+            trianglelist[k].X2 = X2;
+            trianglelist[k].Y2 = Y2;
+            trianglelist[k].X3 = X3;
+            trianglelist[k].Y3 = Y3;
+            trianglelist[k].Fill = filltriangle;
+            trianglelist[k].Stroke = stroketriangle;
 
         }
         public partial int GetQuantityTriangle() // нахождение количества треугольников
         {
-            return triangle.Count;
+            return trianglelist.Count;
         }
         public partial void DeleteCircle(int j) //удаление круга по индексу
         {
-            try
+            if (j > circlelist.Count - 1)
             {
-                if (j < 0)
-                {
-                    throw new IndexOutOfRangeException();
-                }
-                var add = circle;
-                circle.RemoveAt(j);
+                Console.WriteLine("Такого индекса не сущствует, количество добавленных кругов = " + circlelist.Count);
+                
             }
-            catch (IndexOutOfRangeException)
+            else
             {
-                Console.WriteLine("Индекса меньше нуля не существует");
+                circlelist.RemoveAt(j);
+                Console.WriteLine("Круг успешно удален");
             }
-
 
         }
+
         public partial void GetCircle(int i) //получение круга по индексу
         {
-            try
+            if (i >= circlelist.Count)
             {
-                if (i >= circle.Count || i < 0)
-                {
-                    throw new IndexOutOfRangeException();
-                }
-                Console.WriteLine($"Circle [{i}]:");
-                circle[i].print();
+                Console.WriteLine($"Нет круга по этому индексу, количество кругов : {circlelist.Count}");
+                
             }
-            catch (IndexOutOfRangeException)
-            {
-                Console.WriteLine("По этому индексу нет треугольника!");
-            }
-
+            else circlelist[i].print(i);
         }
-
         public partial void DeleteTriangle(int i) //удаление треугольника по индексу
         {
-            try
+            if (i > trianglelist.Count - 1)
             {
-                if (i < 0)
-                {
-                    throw new IndexOutOfRangeException();
-                }
-                for (int j = i; j < triangle.Count - 1; j++) triangle[j] = triangle[j + 1];
-                triangle.RemoveAt(0 + triangle.Count - 1);
+                Console.WriteLine("Такого индекса не сущствует, количество добавленных треугольников = " + circlelist.Count);
+                
             }
-            catch (IndexOutOfRangeException)
+            else
             {
-                Console.WriteLine("Индекса меньше нуля не существует");
+                trianglelist.RemoveAt(i);
+                Console.WriteLine("Треугольник успешно удален");
             }
-
         }
-
         public partial void GetTriangle(int i) //получение треугольтника по индексу
         {
-            try
-            {
-                if (i >= triangle.Count || i < 0)
-                {
-                    throw new IndexOutOfRangeException();
-                }
-                Console.WriteLine($"Triangle [{i}]:");
-                triangle[i].print();
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Console.WriteLine("По этому индексу нет треугольника!");
-            }
 
-
+            if (i >= trianglelist.Count)
+            {
+                Console.WriteLine($"Нет треугольника по этому индексу, количество треугольников : {trianglelist.Count}");
+            }
+            else trianglelist[i].print(i);
         }
-        public partial void MoveX(int dx) //перемещение всех фигур по х координате
+        public partial void MoveXCircles(int dx) //перемещение всех фигур по х координате
         {
-            for (int i = 0; i < circle.Count; i++)
+            for (int i = 0; i < circlelist.Count; i++)
             {
-                circle[i].MoveX(dx);
+                circlelist[i].MoveX(dx);
             }
-
-            for (int i = 0; i < triangle.Count; i++)
-            {
-                triangle[i].MoveX(dx);
-            }
-
         }
-        public partial void MoveY(int dy) //перемещение по y координате
+        public partial void MoveYCircles(int dy) //перемещение по y координате
         {
-            for (int i = 0; i < circle.Count; i++)
+            for (int i = 0; i < circlelist.Count; i++)
             {
-                circle[i].MoveY(dy);
+                circlelist[i].MoveY(dy);
             }
-
-            for (int i = 0; i < triangle.Count; i++)
+        }
+        public partial void MoveXTriangles(int dx)
+        {
+            for (int i = 0; i < trianglelist.Count; i++)
             {
-                triangle[i].MoveY(dy);
+                trianglelist[i].MoveX(dx);
             }
+        }
+        public partial void MoveYTriangles(int dy)
+        {
+            for (int i = 0; i < trianglelist.Count; i++)
+            {
+                trianglelist[i].MoveY(dy);
+            }
+        }
 
+        public partial void MoveXCircle(int dx, int i)
+        {
+            circlelist[i].MoveX(dx);
+        }
+        public partial void MoveYCircle(int dy, int j)
+        {
+            circlelist[j].MoveY(dy);
+        }
+        public partial void MoveXTriangle(int dx, int i)
+        {
+            trianglelist[i].MoveX(dx);
+        }
+        public partial void MoveYTriangle(int dy, int j)
+        {
+            trianglelist[j].MoveY(dy);
         }
     }
-    class Program
+    internal static class Program
     {
-       static void Main()
+        
+        static void Main()
         {
-            Circle circle = new Circle(12, 15, 18, Color.red, Color.blue);
-            FileStream file = File.Create("circle.json");
-            DataContractJsonSerializer form = new DataContractJsonSerializer(circle.GetType());
-
-            form.WriteObject(file, circle);
-            Console.WriteLine("Данные сериализованы");
-            file.Close();
-
-            file = File.OpenRead("circle.json");
-
-            Circle c = form.ReadObject(file) as Circle;
-            Console.WriteLine("Данные десериализованы");
-
-            c.print();
+            
         }
     }
 }
